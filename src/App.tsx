@@ -12,6 +12,8 @@ import Expertise from './pages/Expertise';
 import Contact from './pages/Contact';
 import WhyUs from './pages/WhyUs';
 import About from './pages/About';
+import CRMIntegration from './pages/CRMIntegration';
+import LeadSegmentation from './pages/LeadSegmentation';
 import AOSInitializer from './components/AOSInitializer';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -72,6 +74,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <TrendsReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/crm"
+              element={
+                <ProtectedRoute>
+                  <CRMIntegration />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/segments"
+              element={
+                <ProtectedRoute>
+                  <LeadSegmentation />
                 </ProtectedRoute>
               }
             />

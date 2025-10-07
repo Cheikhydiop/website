@@ -1,8 +1,6 @@
 // src/services/pdf-generators/PdfBaseGenerator.ts - Classe de base pour les générateurs PDF
 
-import PDFDocument from 'pdfkit';
 import { PDF_COLORS, PDF_DIMENSIONS, FONTS, FONT_SIZES } from './PdfConstants';
-import { PdfColors, PdfDimensions } from './PdfTypes';
 import type { PdfColors, PdfDimensions } from './PdfTypes'; // Utiliser type pour les imports
 
 export abstract class PdfBaseGenerator {

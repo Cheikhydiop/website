@@ -103,12 +103,3 @@ export interface PdfColors {
     }>;
   }
   
-  // Export par défaut pour éviter les problèmes d'import
-  export default {
-    PdfColors,
-    PdfDimensions,
-    MetricCard,
-    PdfPosition,
-    PdfSize,
-    ReportData
-  };

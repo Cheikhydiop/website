@@ -416,8 +416,8 @@ export const getVisitStats = async (timeRange: string = '30d') => {
     }, {} as Record<string, number>);
   
     const popularPages = Object.entries(pageStats || {})
-      .map(([path, count]) => ({ path, count, percentage: (count / totalVisits) * 100 }))
-      .sort((a, b) => b.count - a.count)
+      .map(([path, count]) => ({ path, count: count as number, percentage: ((count as number) / totalVisits) * 100 }))
+      .sort((a, b) => (b.count as number) - (a.count as number))
       .slice(0, 10);
   
     return {

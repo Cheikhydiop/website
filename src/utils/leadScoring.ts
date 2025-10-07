@@ -1,5 +1,5 @@
 // utils/leadScoring.ts
-import { Lead } from '../lib/supabase';
+import type { Lead } from '../lib/supabase';
 
 export interface LeadScore {
   total: number;
@@ -40,13 +40,13 @@ export const calculateLeadScore = (lead: Lead): LeadScore => {
   }
 
   // 2. Score basé sur la puissance installée (max 25 points)
-  if (lead.installation_power >= 100) {
+  if (lead.installation_power && lead.installation_power >= 100) {
     breakdown.power = 25;
-  } else if (lead.installation_power >= 75) {
+  } else if (lead.installation_power && lead.installation_power >= 75) {
     breakdown.power = 20;
-  } else if (lead.installation_power >= 50) {
+  } else if (lead.installation_power && lead.installation_power >= 50) {
     breakdown.power = 15;
-  } else if (lead.installation_power >= 25) {
+  } else if (lead.installation_power && lead.installation_power >= 25) {
     breakdown.power = 10;
   } else {
     breakdown.power = 5;
@@ -195,7 +195,7 @@ export const getLeadInsights = (lead: Lead): string[] => {
     insights.push('💰 Facture élevée - Fort potentiel d\'économies');
   }
   
-  if (lead.installation_power > 75) {
+  if (lead.installation_power && lead.installation_power > 75) {
     insights.push('⚡ Installation importante - Solution complète recommandée');
   }
   
