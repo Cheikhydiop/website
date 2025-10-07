@@ -1,0 +1,112 @@
+/* Home Page Styles */
+
+.home-page {
+    min-height: 100vh;
+}
+
+/* About Section */
+#about {
+    position: relative;
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--background) 0%, rgba(16, 133, 117, 0.05) 100%);
+}
+
+.section-3d-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.05;
+}
+
+/* Stats Container */
+.stats-container {
+    margin-top: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(16, 133, 117, 0.15);
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+.stat-label {
+    color: var(--secondary);
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--white);
+    font-size: 24px;
+    box-shadow: 0 10px 25px rgba(16, 133, 117, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #about {
+        padding: 80px 0;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .stat-item {
+        padding: 25px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    #about {
+        padding: 60px 0;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .stat-item {
+        padding: 20px 15px;
+    }
+}

@@ -1,0 +1,363 @@
+/* Hero Section Styles */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--background) 0%, rgba(16, 133, 117, 0.05) 100%);
+}
+
+.hero-3d-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.1;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    z-index: 2;
+    position: relative;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--headline);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-text {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    color: var(--body);
+}
+
+.hero-cta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(16, 133, 117, 0.3);
+}
+
+.hero-btn.outline {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.hero-btn.outline:hover {
+    background: var(--accent);
+    color: var(--white);
+}
+
+.hero-btn.pulse-effect {
+    animation: pulse 2s infinite;
+}
+
+.hero-btn.glow-effect {
+    box-shadow: 0 0 20px rgba(16, 133, 117, 0.3);
+}
+
+.hero-btn.glow-effect:hover {
+    box-shadow: 0 0 30px rgba(16, 133, 117, 0.5);
+}
+
+/* 3D Container et cartes flottantes */
+.hero-3d-container {
+    flex: 1;
+    position: relative;
+    height: 500px;
+    margin-left: 50px;
+    z-index: 2;
+}
+
+.hero-3d-model {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(16, 133, 117, 0.1), rgba(245, 166, 35, 0.1));
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Cartes flottantes */
+.floating-card {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    z-index: 3;
+    border-left: 4px solid var(--primary);
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+    min-width: 260px;
+    max-width: 320px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(21, 149, 127, 0.15);
+}
+
+.floating-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.floating-card:hover {
+    transform: translateY(-5px) translateZ(0) scale(1.03);
+    box-shadow: 0 15px 35px rgba(21, 149, 127, 0.25);
+    border-left: 6px solid var(--primary);
+}
+
+.floating-card.top-right {
+    top: 5%;
+    right: -25%;
+    animation: float 4s ease-in-out infinite;
+    z-index: 10;
+}
+
+.floating-card.mid-right {
+    top: 45%;
+    right: -25%;
+    animation: float 5s ease-in-out infinite;
+    z-index: 10;
+}
+
+.floating-card.bottom-right {
+    bottom: -5%;
+    right: -25%;
+    animation: float 6s ease-in-out infinite;
+    z-index: 10;
+}
+
+.floating-card.bottom-left {
+    bottom: 15%;
+    left: -70px;
+    animation: float 4.5s ease-in-out infinite reverse;
+    z-index: 10;
+}
+
+.floating-card.mid-left {
+    top: 35%;
+    left: -70px;
+    animation: float 5.5s ease-in-out infinite reverse;
+    z-index: 10;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) translateX(0px);
+    }
+    25% {
+        transform: translateY(-10px) translateX(5px);
+    }
+    50% {
+        transform: translateY(-18px) translateX(-3px);
+    }
+    75% {
+        transform: translateY(-7px) translateX(-8px);
+    }
+    100% {
+        transform: translateY(0px) translateX(0px);
+    }
+}
+
+.floating-card-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: var(--white);
+    font-size: 20px;
+    box-shadow: 0 5px 15px rgba(16, 133, 117, 0.25);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.floating-card-icon:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.3));
+    top: 0;
+    left: 0;
+}
+
+.floating-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.floating-card-content h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.floating-card-content p {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 0;
+    color: var(--secondary);
+    opacity: 0.9;
+    word-wrap: break-word;
+}
+
+.hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 133, 117, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(16, 133, 117, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 133, 117, 0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 42px;
+    }
+    
+    .hero-3d-container {
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 60px;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .hero-text {
+        font-size: 16px;
+    }
+    
+    .hero-cta {
+        justify-content: center;
+    }
+    
+    .hero-3d-container {
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-3d-model {
+        height: 200px;
+        margin-bottom: 20px;
+    }
+    
+    .floating-card.top-right,
+    .floating-card.mid-right,
+    .floating-card.bottom-right,
+    .floating-card.bottom-left,
+    .floating-card.mid-left {
+        position: relative;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        margin: 10px auto;
+        max-width: 280px;
+        width: 90%;
+        animation: none;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 28px;
+    }
+    
+    .hero-text {
+        font-size: 16px;
+    }
+    
+    .hero-content {
+        padding: 20px 15px;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}

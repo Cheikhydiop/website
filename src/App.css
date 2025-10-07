@@ -1,0 +1,15 @@
+/* App Styles */
+.App {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Initialisation AOS */
+[data-aos] {
+  opacity: 0;
+  transition-property: opacity, transform;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+}
