@@ -42,8 +42,6 @@ const SakkanalResults: React.FC = () => {
   const [aiRecommendations, setAiRecommendations] = useState<AIRecommendation[]>([]);
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [selectedScenario, setSelectedScenario] = useState<Scenario | null>(null);
-  const [leadFormAction, setLeadFormAction] = useState<'contact' | 'download'>('contact');
-  const [userInfo, setUserInfo] = useState<any>(null);
 
   const formData = (location.state as { formData: QuestionnaireData })?.formData;
 
@@ -217,21 +215,18 @@ const SakkanalResults: React.FC = () => {
 
   const handleContactRequest = (scenario: Scenario) => {
     setSelectedScenario(scenario);
-    setLeadFormAction('contact');
     setShowLeadForm(true);
   };
 
   const handleDownloadRequest = (scenario: Scenario) => {
     setSelectedScenario(scenario);
-    setLeadFormAction('download');
     setShowLeadForm(true);
   };
 
   const handleLeadFormSuccess = (userData: any) => {
-    setUserInfo(userData);
     setShowLeadForm(false);
 
-    if (leadFormAction === 'download' && selectedScenario) {
+    if (selectedScenario) {
       if (!userData || !userData.fullName) {
         alert('Erreur: Informations manquantes.');
         return;
@@ -451,8 +446,8 @@ const SakkanalResults: React.FC = () => {
             <h2>Besoin d'aide pour choisir ?</h2>
             <p>Nos experts sont là pour vous accompagner dans votre projet</p>
             <div className="cta-buttons">
-              <button className="cta-btn primary">
-                <i className="fas fa-phone"></i> Appeler maintenant
+              <button className="cta-btn primary" onClick={() => navigate('/sakkanal/comparison', { state: { formData } })}>
+                <i className="fas fa-balance-scale"></i> Comparer les solutions
               </button>
               <button className="cta-btn secondary" onClick={() => navigate('/sakkanal/qualification')}>
                 <i className="fas fa-redo"></i> Refaire le questionnaire
@@ -468,7 +463,6 @@ const SakkanalResults: React.FC = () => {
           formData={formData}
           onClose={() => setShowLeadForm(false)}
           onSuccess={handleLeadFormSuccess}
-          actionType={leadFormAction}
         />
       )}
     </div>

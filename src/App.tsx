@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Sakkanal from './pages/Sakkanal';
 import SakkanalQualification from './pages/SakkanalQualification';
 import SakkanalResults from './pages/SakkanalResults';
+import ScenariosComparison from './pages/ScenariosComparison';
 import AdminDashboard from './pages/AdminDashboard';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import AdminLogin from './pages/AdminLogin';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/sakkanal" element={<Sakkanal />} />
             <Route path="/sakkanal/qualification" element={<SakkanalQualification />} />
             <Route path="/sakkanal/results" element={<SakkanalResults />} />
+            <Route path="/sakkanal/comparison" element={<ScenariosComparison />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/trainer" element={<TrainingDashboard />} />
 

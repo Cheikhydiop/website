@@ -48,7 +48,7 @@ export const VisitStats: React.FC<VisitStatsProps> = ({ timeRange }) => {
       <div className="traffic-sources">
         <h3>Sources de Traffic</h3>
         <div className="sources-list">
-          {sources.map((source, index) => (
+          {sources.map((source) => (
             <div key={source.source} className="source-item">
               <span className="source-name">{source.source}</span>
               <span className="source-count">{source.count}</span>

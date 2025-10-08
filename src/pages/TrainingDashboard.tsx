@@ -1,10 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+type Metrics = {
+  accuracy: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  mae: number;
+  sitePatterns: Record<string, any>;
+  scenarioPatterns: Record<string, any>;
+};
+
+type TrainingHistoryItem = {
+  version: string;
+  accuracy: number;
+  samples: number;
+  date: string;
+};
 
 const TrainingDashboard = () => {
-  const [metrics, setMetrics] = useState(null);
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(false);
-  const [trainingHistory, setTrainingHistory] = useState([]);
+  const [trainingHistory, setTrainingHistory] = useState<TrainingHistoryItem[]>([]);
   const [newData, setNewData] = useState({
     siteType: '',
     electricityBill: '',
@@ -15,8 +32,6 @@ const TrainingDashboard = () => {
     satisfaction: '',
     roiMonths: ''
   });
-
-  const COLORS = ['#00b894', '#0984e3', '#fdcb6e', '#e17055'];
 
   // Simuler le chargement des données
   useEffect(() => {

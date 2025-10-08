@@ -10,7 +10,7 @@ interface SakkanalScenario {
   estimated_savings: number;
   equipment_lifespan: number;
   min_budget?: number;
-  max_budget?: number;
+  max_budget?: number | null;
   site_types: string[];
 }
 
@@ -30,10 +30,6 @@ interface QuestionnaireData {
 }
 
 export class PdfSakkanalGenerator {
-  private readonly primaryColor = [0, 150, 136] as [number, number, number];
-  private readonly accentColor = [255, 102, 0] as [number, number, number];
-  private readonly darkGray = [51, 51, 51] as [number, number, number];
-  private readonly lightGray = [119, 119, 119] as [number, number, number];
 
   /**
    * Génère le PDF complet pour Sakkanal
