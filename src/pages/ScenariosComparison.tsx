@@ -60,9 +60,13 @@ const ScenariosComparison: React.FC = () => {
         const metrics = calculateMetrics(scenario, formData!);
         const score = calculateCompatibilityScore(scenario, formData!);
 
+        const scenarioProducts = (productsData || []).filter(
+          product => product.category === scenario.category
+        );
+
         return {
           scenario,
-          products: productsData || [],
+          products: scenarioProducts,
           metrics,
           score
         };
@@ -294,6 +298,42 @@ const ScenariosComparison: React.FC = () => {
                         <li><i className="fas fa-check"></i> Économies estimées: {item.scenario.estimated_savings}%</li>
                         <li><i className="fas fa-check"></i> Sites compatibles: {item.scenario.site_types.join(', ')}</li>
                       </ul>
+                    </div>
+
+                    <div className="products-catalog">
+                      <h4><i className="fas fa-box-open"></i> Catalogue de Produits Recommandés</h4>
+                      <div className="products-list">
+                        {item.products.map((product) => (
+                          <div key={product.id} className="product-item">
+                            <div className="product-header">
+                              <div className="product-name">
+                                <i className={`fas ${
+                                  product.name.toLowerCase().includes('compteur') ? 'fa-tachometer-alt' :
+                                  product.name.toLowerCase().includes('gateway') ? 'fa-network-wired' :
+                                  'fa-desktop'
+                                }`}></i>
+                                <span>{product.name}</span>
+                              </div>
+                              <span className="product-price">{product.price.toLocaleString()} FCFA</span>
+                            </div>
+                            <p className="product-description">{product.description}</p>
+                            <div className="product-specs">
+                              <div className="specs-grid">
+                                {Object.entries(product.technical_specs as Record<string, any>).slice(0, 3).map(([key, value]) => (
+                                  <div key={key} className="spec-item">
+                                    <span className="spec-key">{key}:</span>
+                                    <span className="spec-value">{String(value)}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="catalog-summary">
+                        <i className="fas fa-info-circle"></i>
+                        <span>{item.products.length} produits inclus dans cette solution</span>
+                      </div>
                     </div>
                   </div>
 
