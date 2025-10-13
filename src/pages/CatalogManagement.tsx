@@ -165,7 +165,7 @@ const CatalogManagement = () => {
                       <h3>{product.name}</h3>
                       <p>{product.description}</p>
                       <div className="card-footer">
-                        <span className="price">{product.price} €</span>
+                        <span className="price">{product.price} CFA</span>
                       </div>
                     </div>
                   ))}
@@ -277,7 +277,7 @@ const EditModal = ({ item, type, onSave, onClose }: EditModalProps) => {
           </div>
           {type === 'products' && (
             <div className="form-group">
-              <label>Prix (€)</label>
+              <label>Prix (frans)</label>
               <input
                 type="number"
                 value={formData.price || ''}
@@ -290,7 +290,7 @@ const EditModal = ({ item, type, onSave, onClose }: EditModalProps) => {
             <>
               <div className="form-row">
                 <div className="form-group">
-                  <label>Budget Min (€)</label>
+                  <label>Budget Min (francs)</label>
                   <input
                     type="number"
                     value={formData.min_budget || ''}

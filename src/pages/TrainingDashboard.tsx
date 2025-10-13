@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -17,6 +18,12 @@ type TrainingHistoryItem = {
   samples: number;
   date: string;
 };
+=======
+import React, { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { aiModelService } from '../services/aiModelService';
+import { trainingDataService } from '../services/trainingDataService';
+>>>>>>> 566cfcf (feat:redirection)
 
 const TrainingDashboard = () => {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
@@ -33,74 +40,149 @@ const TrainingDashboard = () => {
     roiMonths: ''
   });
 
+<<<<<<< HEAD
   // Simuler le chargement des données
+=======
+  // Charger les données depuis Supabase
+>>>>>>> 566cfcf (feat:redirection)
   useEffect(() => {
     loadTrainingHistory();
+    loadActiveModelMetrics();
   }, []);
 
-  const loadTrainingHistory = () => {
-    // Données de démonstration
-    setTrainingHistory([
-      { version: 'v1.0', accuracy: 85, samples: 8, date: '2025-01-15' },
-      { version: 'v1.1', accuracy: 87, samples: 15, date: '2025-02-10' },
-      { version: 'v1.2', accuracy: 89, samples: 23, date: '2025-03-05' }
-    ]);
+  const loadTrainingHistory = async () => {
+    try {
+      const history = await aiModelService.getTrainingHistory();
+      const formattedHistory = history.map(item => ({
+        version: item.model_version,
+        accuracy: Math.round((item.accuracy || 0) * 100),
+        samples: item.training_samples || 0,
+        date: item.last_trained_at ? new Date(item.last_trained_at).toLocaleDateString('fr-FR') : 'N/A'
+      }));
+      setTrainingHistory(formattedHistory);
+    } catch (error) {
+      console.error('Erreur lors du chargement de l\'historique:', error);
+      // Données de démonstration en cas d'erreur
+      setTrainingHistory([
+        { version: 'v1.0', accuracy: 85, samples: 8, date: '2025-01-15' },
+        { version: 'v1.1', accuracy: 87, samples: 15, date: '2025-02-10' },
+        { version: 'v1.2', accuracy: 89, samples: 23, date: '2025-03-05' }
+      ]);
+    }
+  };
+
+  const loadActiveModelMetrics = async () => {
+    try {
+      const activeMetrics = await aiModelService.getActiveModelMetrics();
+      if (activeMetrics) {
+        setMetrics({
+          accuracy: activeMetrics.accuracy,
+          precision: activeMetrics.precision_score,
+          recall: activeMetrics.recall_score,
+          f1: activeMetrics.f1_score,
+          mae: activeMetrics.mean_absolute_error
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des métriques:', error);
+    }
   };
 
   const handleTrainModel = async () => {
     setLoading(true);
     
-    // Simulation de l'entraînement
-    setTimeout(() => {
-      setMetrics({
-        accuracy: 0.89,
-        precision: 0.87,
-        recall: 0.91,
-        f1: 0.89,
-        mae: 2.1,
-        sitePatterns: {
-          'bureau': { count: 5, avgSavings: 24, mostChosen: 'standard' },
-          'usine': { count: 3, avgSavings: 36, mostChosen: 'premium' },
-          'commerce': { count: 4, avgSavings: 18, mostChosen: 'economique' }
-        },
-        scenarioPatterns: {
-          'economique': { count: 4, avgSavings: 17, avgROI: 19 },
-          'standard': { count: 8, avgSavings: 26, avgROI: 13 },
-          'premium': { count: 3, avgSavings: 38, avgROI: 10 }
-        }
+    try {
+      // 1. Récupérer les données d'entraînement et calculer les statistiques
+      const trainingStats = await trainingDataService.getTrainingStats();
+      
+      // 2. Calculer les métriques du modèle (simulation)
+      const newMetrics = await calculateModelMetrics(trainingStats);
+      
+      // 3. Désactiver les anciens modèles
+      await aiModelService.deactivateOldModels();
+      
+      // 4. Créer les nouvelles métriques
+      const version = `v${trainingHistory.length + 1}.0`;
+      await aiModelService.createModelMetrics({
+        modelVersion: version,
+        accuracy: newMetrics.accuracy,
+        precision: newMetrics.precision,
+        recall: newMetrics.recall,
+        f1: newMetrics.f1,
+        mae: newMetrics.mae,
+        trainingSamples: trainingStats.totalSamples
       });
+
+      // 5. Mettre à jour l'état local
+      setMetrics(newMetrics);
+      await loadTrainingHistory();
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'entraînement:', error);
+      alert('Erreur lors de l\'entraînement du modèle');
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
-  const handleAddTrainingData = () => {
-    alert('Données ajoutées à l\'ensemble d\'entraînement !');
-    setNewData({
-      siteType: '',
-      electricityBill: '',
-      installationPower: '',
-      budget: '',
-      chosenScenario: '',
-      actualSavings: '',
-      satisfaction: '',
-      roiMonths: ''
-    });
+  const calculateModelMetrics = async (trainingStats) => {
+    // Simulation du calcul des métriques
+    return {
+      accuracy: 0.85 + Math.random() * 0.1,
+      precision: 0.83 + Math.random() * 0.1,
+      recall: 0.87 + Math.random() * 0.1,
+      f1: 0.85 + Math.random() * 0.1,
+      mae: 2.0 + Math.random() * 0.5,
+      sitePatterns: trainingStats.sitePatterns || {},
+      scenarioPatterns: trainingStats.scenarioPatterns || {}
+    };
+  };
+
+  const handleAddTrainingData = async () => {
+    try {
+      // Validation des données
+      if (!newData.siteType || !newData.chosenScenario || !newData.actualSavings) {
+        alert('Veuillez remplir les champs obligatoires: Type de site, Scénario choisi et Économies réelles');
+        return;
+      }
+
+      await trainingDataService.addTrainingData({
+        ...newData,
+        implementationSuccess: true
+      });
+
+      alert('Données ajoutées à l\'ensemble d\'entraînement !');
+      setNewData({
+        siteType: '',
+        electricityBill: '',
+        installationPower: '',
+        budget: '',
+        chosenScenario: '',
+        actualSavings: '',
+        satisfaction: '',
+        roiMonths: ''
+      });
+
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout des données:', error);
+      alert('Erreur lors de l\'ajout des données');
+    }
   };
 
   const sitePatternData = metrics?.sitePatterns 
-    ? Object.entries(metrics.sitePatterns).map(([name, data]: [string, any]) => ({
+    ? Object.entries(metrics.sitePatterns).map(([name, data]) => ({
         name,
         count: data.count,
-        avgSavings: data.avgSavings
+        avgSavings: Math.round(data.avgSavings)
       }))
     : [];
 
   const scenarioPatternData = metrics?.scenarioPatterns
-    ? Object.entries(metrics.scenarioPatterns).map(([name, data]: [string, any]) => ({
+    ? Object.entries(metrics.scenarioPatterns).map(([name, data]) => ({
         name,
         count: data.count,
-        avgSavings: data.avgSavings,
-        avgROI: data.avgROI
+        avgSavings: Math.round(data.avgSavings),
+        avgROI: Math.round(data.avgROI)
       }))
     : [];
 
@@ -164,19 +246,19 @@ const TrainingDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg p-6 text-white">
                 <div className="text-sm opacity-90 mb-2">Exactitude</div>
-                <div className="text-4xl font-bold">{(metrics.accuracy * 100).toFixed(0)}%</div>
+                <div className="text-4xl font-bold">{Math.round((metrics.accuracy || 0) * 100)}%</div>
               </div>
               <div className="bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl shadow-lg p-6 text-white">
                 <div className="text-sm opacity-90 mb-2">Précision</div>
-                <div className="text-4xl font-bold">{(metrics.precision * 100).toFixed(0)}%</div>
+                <div className="text-4xl font-bold">{Math.round((metrics.precision || 0) * 100)}%</div>
               </div>
               <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-lg p-6 text-white">
                 <div className="text-sm opacity-90 mb-2">Rappel</div>
-                <div className="text-4xl font-bold">{(metrics.recall * 100).toFixed(0)}%</div>
+                <div className="text-4xl font-bold">{Math.round((metrics.recall || 0) * 100)}%</div>
               </div>
               <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl shadow-lg p-6 text-white">
                 <div className="text-sm opacity-90 mb-2">Score F1</div>
-                <div className="text-4xl font-bold">{(metrics.f1 * 100).toFixed(0)}%</div>
+                <div className="text-4xl font-bold">{Math.round((metrics.f1 || 0) * 100)}%</div>
               </div>
             </div>
 
@@ -231,7 +313,7 @@ const TrainingDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Type de site
+                Type de site *
               </label>
               <select
                 value={newData.siteType}
@@ -287,7 +369,7 @@ const TrainingDashboard = () => {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Scénario choisi
+                Scénario choisi *
               </label>
               <select
                 value={newData.chosenScenario}
@@ -303,7 +385,7 @@ const TrainingDashboard = () => {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Économies réelles (%)
+                Économies réelles (%) *
               </label>
               <input
                 type="number"
@@ -349,42 +431,6 @@ const TrainingDashboard = () => {
           >
             Ajouter aux données d'entraînement
           </button>
-        </div>
-
-        {/* Guide d'utilisation */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 mt-8">
-          <h2 className="text-2xl font-bold text-slate-800 mb-4">
-            Guide d'entraînement du modèle
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <div className="bg-white rounded-lg p-4 mb-3">
-                <div className="text-3xl mb-2">1️⃣</div>
-                <h3 className="font-bold text-slate-800 mb-2">Collecter les données</h3>
-                <p className="text-sm text-slate-600">
-                  Après chaque installation terminée, ajoutez les résultats réels dans le système
-                </p>
-              </div>
-            </div>
-            <div>
-              <div className="bg-white rounded-lg p-4 mb-3">
-                <div className="text-3xl mb-2">2️⃣</div>
-                <h3 className="font-bold text-slate-800 mb-2">Entraîner le modèle</h3>
-                <p className="text-sm text-slate-600">
-                  Minimum 10-15 cas pour un premier entraînement, puis régulièrement tous les mois
-                </p>
-              </div>
-            </div>
-            <div>
-              <div className="bg-white rounded-lg p-4 mb-3">
-                <div className="text-3xl mb-2">3️⃣</div>
-                <h3 className="font-bold text-slate-800 mb-2">Activer le modèle</h3>
-                <p className="text-sm text-slate-600">
-                  Si les métriques sont satisfaisantes (85% d'exactitude), activez le nouveau modèle
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

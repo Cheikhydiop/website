@@ -6,6 +6,7 @@ import { exportToCSV, formatLeadsForExport } from '../utils/exportUtils';
 import Header from '../components/Header';
 import TimeRangeFilter, { type TimeRange } from '../components/TimeRangeFilter';
 import './AdminDashboard.css';
+import NotificationCenter from './NotificationCenter';
 
 type LeadWithInteractions = Lead & {
   interactions: LeadInteraction[];
@@ -139,6 +140,7 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
+<<<<<<< HEAD
   const calculateMetrics = async () => {
     const converted = leads.filter((l) => l.status === 'converted').length;
     const total = leads.length;
@@ -166,6 +168,11 @@ const AdminDashboard: React.FC = () => {
         return new Date(0);
     }
     return startDate;
+=======
+  const formatCurrency = (value: number | null | undefined): string => {
+    if (value === null || value === undefined) return 'N/A';
+    return value.toLocaleString() + ' FCFA';
+>>>>>>> 566cfcf (feat:redirection)
   };
 
   const stats = {
@@ -189,7 +196,11 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="header-actions">
+<<<<<<< HEAD
               <TimeRangeFilter value={timeRange} onChange={setTimeRange} />
+=======
+            <NotificationCenter onLeadClick={handleLeadClick} />
+>>>>>>> 566cfcf (feat:redirection)
               <button
                 className="btn-export"
                 onClick={() => exportToCSV(formatLeadsForExport(leads), 'leads_inesic')}
@@ -365,7 +376,7 @@ const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td>{lead.site_type}</td>
-                        <td>{lead.electricity_bill.toLocaleString()} FCFA</td>
+                        <td>{formatCurrency(lead.electricity_bill)}</td>
                         <td>
                           <span className={`status-badge ${getStatusBadgeClass(lead.status)}`}>
                             {getStatusLabel(lead.status)}
@@ -450,16 +461,16 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Facture mensuelle</span>
-                  <span className="detail-value">{selectedLead.electricity_bill.toLocaleString()} FCFA</span>
+                  <span className="detail-value">{formatCurrency(selectedLead.electricity_bill)}</span>
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Puissance installée</span>
-                  <span className="detail-value">{selectedLead.installation_power} kW</span>
+                  <span className="detail-value">{selectedLead.installation_power ? `${selectedLead.installation_power} kW` : 'N/A'}</span>
                 </div>
                 {selectedLead.budget && (
                   <div className="detail-item">
                     <span className="detail-label">Budget</span>
-                    <span className="detail-value">{selectedLead.budget.toLocaleString()} FCFA</span>
+                    <span className="detail-value">{formatCurrency(selectedLead.budget)}</span>
                   </div>
                 )}
               </div>
@@ -467,13 +478,13 @@ const AdminDashboard: React.FC = () => {
               <div className="detail-section full-width">
                 <h3>Besoins identifiés</h3>
                 <div className="tags-list">
-                  {selectedLead.specific_needs.map((need) => (
+                  {(selectedLead.specific_needs || []).map((need) => (
                     <span key={need} className="tag">{need}</span>
                   ))}
                 </div>
                 <h3 style={{ marginTop: '20px' }}>Zones à surveiller</h3>
                 <div className="tags-list">
-                  {selectedLead.zones_to_monitor.map((zone) => (
+                  {(selectedLead.zones_to_monitor || []).map((zone) => (
                     <span key={zone} className="tag">{zone}</span>
                   ))}
                 </div>
