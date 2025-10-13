@@ -4,7 +4,6 @@ import { supabase, type Lead, type LeadInteraction } from '../lib/supabase';
 import { useAnalytics } from '../lib/analytics';
 import { exportToCSV, formatLeadsForExport } from '../utils/exportUtils';
 import Header from '../components/Header';
-import TimeRangeFilter, { type TimeRange } from '../components/TimeRangeFilter';
 import './AdminDashboard.css';
 import NotificationCenter from './NotificationCenter';
 
@@ -16,22 +15,18 @@ const AdminDashboard: React.FC = () => {
   const [leads, setLeads] = useState<LeadWithInteractions[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'new' | 'contacted' | 'qualified' | 'converted'>('all');
-  const [timeRange, setTimeRange] = useState<TimeRange>('30d');
   const [selectedLead, setSelectedLead] = useState<LeadWithInteractions | null>(null);
-  const [conversionRate, setConversionRate] = useState<number>(0);
-
+  
   const { trackPageView, trackLeadAction } = useAnalytics();
 
   useEffect(() => {
     trackPageView('/admin/dashboard');
     loadLeads();
-    calculateMetrics();
   }, []);
 
   useEffect(() => {
     loadLeads();
-    calculateMetrics();
-  }, [filter, timeRange]);
+  }, [filter]);
 
   const loadLeads = async () => {
     try {
@@ -41,11 +36,6 @@ const AdminDashboard: React.FC = () => {
         .from('leads')
         .select('*')
         .order('created_at', { ascending: false });
-
-      if (timeRange !== 'all') {
-        const startDate = getStartDateFromRange(timeRange);
-        query = query.gte('created_at', startDate.toISOString());
-      }
 
       if (filter !== 'all') {
         query = query.eq('status', filter);
@@ -140,39 +130,9 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-<<<<<<< HEAD
-  const calculateMetrics = async () => {
-    const converted = leads.filter((l) => l.status === 'converted').length;
-    const total = leads.length;
-    const rate = total > 0 ? (converted / total * 100).toFixed(1) : '0.0';
-    setConversionRate(parseFloat(rate));
-  };
-
-  const getStartDateFromRange = (range: TimeRange): Date => {
-    const now = new Date();
-    const startDate = new Date();
-    switch (range) {
-      case '7d':
-        startDate.setDate(now.getDate() - 7);
-        break;
-      case '30d':
-        startDate.setDate(now.getDate() - 30);
-        break;
-      case '90d':
-        startDate.setDate(now.getDate() - 90);
-        break;
-      case '1y':
-        startDate.setFullYear(now.getFullYear() - 1);
-        break;
-      default:
-        return new Date(0);
-    }
-    return startDate;
-=======
   const formatCurrency = (value: number | null | undefined): string => {
     if (value === null || value === undefined) return 'N/A';
     return value.toLocaleString() + ' FCFA';
->>>>>>> 566cfcf (feat:redirection)
   };
 
   const stats = {
@@ -196,11 +156,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="header-actions">
-<<<<<<< HEAD
-              <TimeRangeFilter value={timeRange} onChange={setTimeRange} />
-=======
             <NotificationCenter onLeadClick={handleLeadClick} />
->>>>>>> 566cfcf (feat:redirection)
               <button
                 className="btn-export"
                 onClick={() => exportToCSV(formatLeadsForExport(leads), 'leads_inesic')}
@@ -216,30 +172,11 @@ const AdminDashboard: React.FC = () => {
                 <i className="fas fa-box"></i>
                 Catalogue
               </a>
-              <a href="/admin/crm" className="btn-crm">
-                <i className="fas fa-plug"></i>
-                CRM
-              </a>
-              <a href="/admin/segments" className="btn-segments">
-                <i className="fas fa-layer-group"></i>
-                Segments
-              </a>
             </div>
           </div>
 
           {/* Section Stats principales */}
           <div className="stats-grid">
-            <div className="stat-card highlight" onClick={() => setFilter('all')}>
-              <div className="stat-icon">
-                <i className="fas fa-chart-line"></i>
-              </div>
-              <div className="stat-content">
-                <span className="stat-value">{conversionRate}%</span>
-                <span className="stat-label">Taux de Conversion</span>
-                <div className="stat-detail">{stats.converted} / {stats.total} leads</div>
-              </div>
-            </div>
-
             <div className="stat-card" onClick={() => setFilter('all')}>
               <div className="stat-icon">
                 <i className="fas fa-users"></i>
