@@ -20,7 +20,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { useAnalyticsTracking } from './hooks/useAnalyticsTracking';
 import './App.css';
-import TrainingDashboard from './pages/TrainingDashboard';
+// import TrainingDashboard from './pages/TrainingDashboard';
 
 
 // Composant pour initialiser le tracking
@@ -43,7 +43,7 @@ function App() {
             <Route path="/sakkanal/results" element={<SakkanalResults />} />
             <Route path="/sakkanal/comparison" element={<ScenariosComparison />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/trainer" element={<TrainingDashboard />} />
+            {/* <Route path="/trainer" element={<TrainingDashboard />} /> */}
 
 
             
