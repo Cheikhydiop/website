@@ -338,7 +338,7 @@ const SakkanalResults: React.FC = () => {
                 calculateMonthlySavings(formData.electricityBill, savingsPercent);
               const annualSavings = item.aiPrediction?.estimatedAnnualSavings || 
                 calculateAnnualSavings(monthlySavings);
-              const roiMonths = item.aiPrediction?.predictedROIMonths;
+              // const roiMonths = item.aiPrediction?.predictedROIMonths;
 
               return (
                 <div
