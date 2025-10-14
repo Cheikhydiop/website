@@ -368,9 +368,8 @@ const SakkanalResults: React.FC = () => {
                     <i className="fas fa-check-circle"></i>
                     <span>{item.matchReason}</span>
                   </div>
-
                   <div className="scenario-metrics">
-                    <div className="metric">
+                    <div className="metric metric-full">
                       <div className="metric-icon">
                         <i className="fas fa-percentage"></i>
                       </div>
@@ -380,44 +379,22 @@ const SakkanalResults: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="metric">
+                    <div className="metric metric-full">
                       <div className="metric-icon">
                         <i className="fas fa-coins"></i>
                       </div>
                       <div>
-                        <span className="metric-value">{monthlySavings.toLocaleString()} FCFA</span>
+                        <span className="metric-value">{Math.round(monthlySavings).toLocaleString()} FCFA</span>
                         <span className="metric-label">Économies mensuelles</span>
                       </div>
                     </div>
 
-                    {roiMonths && (
-                      <div className="metric">
-                        <div className="metric-icon">
-                          <i className="fas fa-clock"></i>
-                        </div>
-                        <div>
-                          <span className="metric-value">{roiMonths} mois</span>
-                          <span className="metric-label">Retour sur investissement</span>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="metric">
-                      <div className="metric-icon">
-                        <i className="fas fa-calendar-alt"></i>
-                      </div>
-                      <div>
-                        <span className="metric-value">{item.scenario.equipment_lifespan} ans</span>
-                        <span className="metric-label">Durée de vie</span>
-                      </div>
-                    </div>
-
-                    <div className="metric highlight">
+                    <div className="metric metric-full highlight">
                       <div className="metric-icon">
                         <i className="fas fa-chart-line"></i>
                       </div>
                       <div>
-                        <span className="metric-value">{annualSavings.toLocaleString()} FCFA</span>
+                        <span className="metric-value">{Math.round(annualSavings).toLocaleString()} FCFA</span>
                         <span className="metric-label">Économies annuelles</span>
                       </div>
                     </div>

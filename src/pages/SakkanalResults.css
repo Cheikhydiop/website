@@ -207,6 +207,10 @@
   flex-shrink: 0;
 }
 
+.metric-full {
+  grid-column: 1 / -1;
+}
+
 .metric div {
   display: flex;
   flex-direction: column;
