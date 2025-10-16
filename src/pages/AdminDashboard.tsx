@@ -149,14 +149,13 @@ const AdminDashboard: React.FC = () => {
 
       <section className="dashboard-section">
         <div className="container">
-          <div className="dashboard-header">
+          <div className="dashboard-header" style={{ position: 'relative' }}>
             <div>
               <h1>Tableau de bord <span className="gradient-text">Administrateur</span></h1>
               <p>Gestion des leads et qualification commerciale</p>
             </div>
 
             <div className="header-actions">
-            <NotificationCenter onLeadClick={handleLeadClick} />
               <button
                 className="btn-export"
                 onClick={() => exportToCSV(formatLeadsForExport(leads), 'leads_inesic')}
@@ -172,6 +171,11 @@ const AdminDashboard: React.FC = () => {
                 <i className="fas fa-box"></i>
                 Catalogue
               </a>
+            </div>
+
+            {/* Notification positionnée à droite sur la même ligne */}
+            <div style={{ position: 'absolute', right: '0', top: '150px' }}>
+              <NotificationCenter onLeadClick={handleLeadClick} />
             </div>
           </div>
 

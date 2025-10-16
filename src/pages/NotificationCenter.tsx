@@ -277,7 +277,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onLeadClick }) 
     : notifications;
 
   return (
-    <div className="notification-center">
+    <div className="notification-center" style={{ marginLeft: 'auto' }}>
       <button 
         className="notification-bell"
         onClick={() => {
